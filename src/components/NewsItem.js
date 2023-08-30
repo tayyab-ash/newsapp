@@ -1,19 +1,21 @@
 import React, { Component } from "react";
+import './NewsItem.css';
+
 
 export class NewsItem extends Component {
   render() {
-    let {title, description} = this.props; 
+    let {title, description, imageUrl, newsUrl} = this.props; 
     return (
       <div>
-        <div className="card" style={{width: "18rem"}}>
-          <img src="https://i.kinja-img.com/gawker-media/image/upload/c_fill,f_auto,fl_progressive,g_center,h_675,pg_1,q_80,w_1200/95e29496e5ca0c3441d0471d5258dc6d.jpg" className="card-img-top" alt="..." />
+        <div className="card my-3">
+          <img src={!imageUrl? 'https://i.ibb.co/JvHLYH0/News-APP-1.png':imageUrl} className="card-img-top" alt="..." />
           <div className="card-body">
-            <h5 className="card-title">{title}</h5>
+            <h5 className="card-title">{!title? 'Sorry! This news is not avaiable right now. Please refresh to update news catalog!' : title}</h5>
             <p className="card-text">
-              {description}
+              {!description? 'Description not available. Click read more for details.':description}
             </p>
-            <a href="/" className="btn btn-primary">
-              Go somewhere
+            <a href={newsUrl} target="_blank" rel="noopener noreferrer" className="btn btn-dark">
+              Read More
             </a>
           </div>
         </div>
