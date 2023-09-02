@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import NewsItem from './NewsItem'
 import Spinner from './Spinner';
 import PropTypes from 'prop-types'
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export class News extends Component {
   static defaultProps = {
@@ -23,13 +24,14 @@ export class News extends Component {
     this.state = {
       articles: [],
       loading: false,
-      page: 1
+      page: 1,
+      totalResults: 0
     }
     document.title = `${this.capitalizeTitle(this.props.category)} - NewsAPP`
-    
+
   }
 
-  capitalizeTitle =(string)=>{
+  capitalizeTitle = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
@@ -42,7 +44,7 @@ export class News extends Component {
     }
   }
   async updateNews() {
-    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=94c9334cf7384aa6a251f6dab17f9b39&pageSize=${this.props.pageSize}&page=${this.state.page}`;
+    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=9df1537409244622aae4a9c4316f3986&pageSize=${this.props.pageSize}&page=${this.state.page}`;
     this.setState({ loading: true })
     let data = await fetch(url);
     let parseData = await data.json();
@@ -56,31 +58,60 @@ export class News extends Component {
   async componentDidMount() {
     this.updateNews();
   }
-  handlePrevClick = async () => {
-    if (this.state.page > 1) {
-      this.setState(
-        (prevState) => ({
-          page: prevState.page - 1,
-        }),
-        () => {
-          this.updateNews();
-        }
-      );
-    }
+
+  async updateNewsScroll(){
+    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=9df1537409244622aae4a9c4316f3986&pageSize=${this.props.pageSize}&page=${this.state.page}`;
+      this.setState({ loading: true })
+      let data = await fetch(url);
+      let parseData = await data.json();
+      console.log(parseData);
+      this.setState({
+        articles: this.state.articles.concat(parseData.articles),
+        totalResults: parseData.totalResults,
+        loading: false
+      })
   }
 
-  handleNextClick = async () => {
-    if (this.state.page < (Math.ceil(this.state.totalResults / this.props.pageSize))) {
+
+  fetchMoreData = async () => {
+    if (this.state.page < Math.ceil(this.state.totalResults / this.props.pageSize)) {
       this.setState(
         (prevState) => ({
           page: prevState.page + 1,
         }),
         () => {
-          this.updateNews();
+          this.updateNewsScroll();
         }
       );
     }
   }
+
+
+  // handlePrevClick = async () => {
+  //   if (this.state.page > 1) {
+  // this.setState(
+  //   (prevState) => ({
+  //     page: prevState.page - 1,
+  //   }),
+  //       () => {
+  //         this.updateNews();
+  //       }
+  //     );
+  //   }
+  // }
+
+  // handleNextClick = async () => {
+  //   if (this.state.page < (Math.ceil(this.state.totalResults / this.props.pageSize))) {
+  //     this.setState(
+  //       (prevState) => ({
+  //         page: prevState.page + 1,
+  //       }),
+  //       () => {
+  //         this.updateNews();
+  //       }
+  //     );
+  //   }
+  // }
 
 
 
@@ -93,19 +124,27 @@ export class News extends Component {
         <h1 className='text-center heading'>Top Headlines - {this.capitalizeTitle(this.props.category)}</h1>
         <hr />
         {this.state.loading && <Spinner />}
-        {!this.state.loading && <div className='d-flex justify-content-between margin'>
+        {/* {!this.state.loading && <div className='d-flex justify-content-between margin'>
           <button disabled={this.state.page <= 1} className='btn btn-dark ' onClick={this.handlePrevClick}>&#8592; Previous</button>
           <button disabled={this.state.page + 1 > Math.ceil(this.state.totalResults / this.props.pageSize)} className='btn btn-dark' onClick={this.handleNextClick}>Next &#8594;</button>
-        </div>}
-        <div className='d-flex justify-content-start flex-wrap'>
-          {!this.state.loading && this.state.articles.map((element) => {
-            return <NewsItem key={!element.url ? Math.random() : element.url} title={element.title} description={element.description} imageUrl={element.urlToImage} newsUrl={element.url} author={!element.author ? 'Unknown' : element.author} date={element.publishedAt} source={element.source.name} />
-          })}
-        </div>
-        {!this.state.loading && <div className='d-flex justify-content-between margin'>
+        </div>} */}
+        <InfiniteScroll
+          dataLength={this.state.articles.length}
+          next={this.fetchMoreData}
+          hasMore={ this.state.articles.length !== this.state.totalResults }
+          // loader={<Spinner/>}
+          loader={this.state.loading && <Spinner />}
+        >
+          <div className='d-flex justify-content-start flex-wrap'>
+            {this.state.articles.map((element) => {
+              return <NewsItem key={!element.url? Math.random():element.url} title={element.title} description={element.description} imageUrl={element.urlToImage} newsUrl={element.url} author={!element.author ? 'Unknown' : element.author} date={element.publishedAt} source={element.source.name} />
+            })}
+          </div>
+        </InfiniteScroll>
+        {/* {!this.state.loading && <div className='d-flex justify-content-between margin'>
           <button disabled={this.state.page <= 1} className='btn btn-dark' onClick={this.handlePrevClick}>&#8592; Previous</button>
           <button disabled={this.state.page + 1 > Math.ceil(this.state.totalResults / this.props.pageSize)} className='btn btn-dark' onClick={this.handleNextClick}>Next &#8594;</button>
-        </div>}
+        </div>} */}
       </div>
     )
   }
