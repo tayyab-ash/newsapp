@@ -31,7 +31,7 @@ export default class App extends Component {
           <Navbar changeCountry={this.changeCountry.bind(this)} />
           <Routes>
             <Route exact path="/" element={<News key="home" pageSize={this.pagesize} country={this.state.country} category='general' />} />
-            <Route exact path="/general" element={<News key="general" pageSize={this.pagesize} country={this.state.country} category='general' />} />
+            {/* <Route exact path="/general" element={<News key="general" pageSize={this.pagesize} country={this.state.country} category='general' />} /> */}
             <Route exact path="/business" element={<News key="business" pageSize={this.pagesize} country={this.state.country} category='business' />} />
             <Route exact path="/entertainment" element={<News key="entertainment" pageSize={this.pagesize} country={this.state.country} category='entertainment' />} />
             <Route exact path="/health" element={<News key="health" pageSize={this.pagesize} country={this.state.country} category='health' />} />

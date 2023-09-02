@@ -17,16 +17,21 @@ export class News extends Component {
   }
 
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     console.log("hello i am a Constructor.")
     this.state = {
       articles: [],
       loading: false,
       page: 1
     }
+    document.title = `${this.capitalizeTitle(this.props.category)} - NewsAPP`
+    
   }
 
+  capitalizeTitle =(string)=>{
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 
   async componentDidUpdate(prevProps) {
     if (prevProps.country !== this.props.country) {
@@ -85,19 +90,19 @@ export class News extends Component {
     console.log("render")
     return (
       <div className='container my-3'>
-        <h1 className='text-center'>Top Headlines</h1>
+        <h1 className='text-center heading'>Top Headlines - {this.capitalizeTitle(this.props.category)}</h1>
         <hr />
         {this.state.loading && <Spinner />}
-        {!this.state.loading && <div className='d-flex justify-content-between'>
-          <button disabled={this.state.page <= 1} className='btn btn-dark' onClick={this.handlePrevClick}>&#8592; Previous</button>
+        {!this.state.loading && <div className='d-flex justify-content-between margin'>
+          <button disabled={this.state.page <= 1} className='btn btn-dark ' onClick={this.handlePrevClick}>&#8592; Previous</button>
           <button disabled={this.state.page + 1 > Math.ceil(this.state.totalResults / this.props.pageSize)} className='btn btn-dark' onClick={this.handleNextClick}>Next &#8594;</button>
         </div>}
-        <div className='d-flex justify-content-between flex-wrap'>
+        <div className='d-flex justify-content-start flex-wrap'>
           {!this.state.loading && this.state.articles.map((element) => {
             return <NewsItem key={!element.url ? Math.random() : element.url} title={element.title} description={element.description} imageUrl={element.urlToImage} newsUrl={element.url} author={!element.author ? 'Unknown' : element.author} date={element.publishedAt} source={element.source.name} />
           })}
         </div>
-        {!this.state.loading && <div className='d-flex justify-content-between'>
+        {!this.state.loading && <div className='d-flex justify-content-between margin'>
           <button disabled={this.state.page <= 1} className='btn btn-dark' onClick={this.handlePrevClick}>&#8592; Previous</button>
           <button disabled={this.state.page + 1 > Math.ceil(this.state.totalResults / this.props.pageSize)} className='btn btn-dark' onClick={this.handleNextClick}>Next &#8594;</button>
         </div>}
