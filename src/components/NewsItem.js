@@ -22,11 +22,11 @@ export class NewsItem extends Component {
       <div>
         <div className="card margin my-2">
           <a href={newsUrl} target="_blank" rel="noopener noreferrer"><img src={this.state.imageSrc} onError={this.handleImageError} className="card-img-top" alt="Unable to load thumbnail."   /></a>
-          <p className="card-text mt-1 mb-0"><small className="mx-3">{source}</small></p>
+          <p className="card-text mt-1 mb-0"><small className="mx-3">{source === '[Removed]'? 'Source not available': source}</small></p>
           <div className="card-body">
-            <h5 className="card-title"><a className="link-dark text-decoration-none" target="_blank" rel="noopener noreferrer" href={newsUrl}>{!title ? 'Sorry! This news is not avaiable right now. Please refresh to update news catalog!' : title}</a></h5>
+            <h5 className="card-title"><a className="link-dark text-decoration-none" target="_blank" rel="noopener noreferrer" href={newsUrl}>{title ==='[Removed]'? 'Sorry! This news is not avaiable right now. Please refresh to update news catalog!' : title}</a></h5>
             <p className="card-text">
-              {!description ? 'Description not available. Click read more for details.' : description}
+              {description === '[Removed]'? 'Description not available. Click read more for details.' : description}
             </p>
             <p className="card-text"><small className="text-body-secondary">{!(author && title) ? 'Not Available' : `By ${author} Updated on ${new Date(date).toGMTString()}`}</small></p>
             {/* <a href={newsUrl} target="_blank" rel="noopener noreferrer" className="btn btn-dark">

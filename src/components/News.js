@@ -8,8 +8,8 @@ export class News extends Component {
   static defaultProps = {
     country: this.country,
     pageSize: this.pageSize,
-    category: 'general'
-
+    category: 'general',
+    // apiKey: this.apiKey
   }
   static propTypes = {
     country: PropTypes.string,
@@ -44,23 +44,27 @@ export class News extends Component {
     }
   }
   async updateNews() {
-    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=9df1537409244622aae4a9c4316f3986&pageSize=${this.props.pageSize}&page=${this.state.page}`;
+    this.props.setProgress(10);
+    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&pageSize=${this.props.pageSize}&page=${this.state.page}`;
     this.setState({ loading: true })
     let data = await fetch(url);
+    this.props.setProgress(40);
     let parseData = await data.json();
+    this.props.setProgress(70);
     console.log(parseData);
     this.setState({
       articles: parseData.articles,
       totalResults: parseData.totalResults,
       loading: false
     })
+    this.props.setProgress(100);
   }
   async componentDidMount() {
     this.updateNews();
   }
 
   async updateNewsScroll(){
-    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=9df1537409244622aae4a9c4316f3986&pageSize=${this.props.pageSize}&page=${this.state.page}`;
+    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&pageSize=${this.props.pageSize}&page=${this.state.page}`;
       this.setState({ loading: true })
       let data = await fetch(url);
       let parseData = await data.json();
@@ -137,7 +141,7 @@ export class News extends Component {
         >
           <div className='d-flex justify-content-start flex-wrap'>
             {this.state.articles.map((element) => {
-              return <NewsItem key={!element.url? Math.random():element.url} title={element.title} description={element.description} imageUrl={element.urlToImage} newsUrl={element.url} author={!element.author ? 'Unknown' : element.author} date={element.publishedAt} source={element.source.name} />
+              return <NewsItem key={element.url==='https://removed.com'? Math.random():element.url} title={element.title} description={element.description} imageUrl={element.urlToImage} newsUrl={element.url} author={!element.author ? 'Unknown' : element.author} date={element.publishedAt} source={element.source.name} />
             })}
           </div>
         </InfiniteScroll>

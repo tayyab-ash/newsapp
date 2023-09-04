@@ -6,7 +6,7 @@ import './NewsItem.css';
 
 const countryImages = {
   in: india,
-  us: us,
+  us: us
 };
 
 export class Navbar extends Component {
