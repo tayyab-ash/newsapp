@@ -13,14 +13,15 @@ export class Navbar extends Component {
 
   constructor(props) {
     super(props);
+    const storedFlag = localStorage.getItem('selectedFlag'); 
     this.state = {
-      selectedCountry: 'in'
+      selectedCountry: storedFlag || 'in' //retrieves the country from the Local storage if no Key is pressent the in the local storage 'in' is used.
     };
   }
 
   handleChangeCountry(newCountry) {
     this.props.changeCountry(newCountry)
-
+    localStorage.setItem('selectedFlag', newCountry); //stores the selected country Flag key in the local storage when the country is changed.
     this.setState({
       selectedCountry: newCountry,
     });

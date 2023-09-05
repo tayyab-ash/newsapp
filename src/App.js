@@ -11,25 +11,27 @@ import {
 // import Footer from './components/Footer';
 
 export default class App extends Component {
-  
-  state ={
+
+  state = {
     progress: 0
   }
-  setProgress=(progress)=>{
+  setProgress = (progress) => {
     this.setState({
       progress: progress
     })
   }
   constructor() {
     super();
+    const storedCountry = localStorage.getItem('selectedCountry'); 
     this.state = {
-      country: 'in'
-    }
+      country: storedCountry || 'in' //retrieves the country from the Local storage if no Key is pressent the in the local storage 'in' is used.
+    };
   }
   changeCountry(ctr) {
+    localStorage.setItem('selectedCountry', ctr);   //stores the selected country in the local storage when the country is changed.
     this.setState({
       country: ctr
-    })
+    });
     console.log("COUNTRY CHANGED", ctr)
   }
   pagesize = 20;
@@ -40,10 +42,10 @@ export default class App extends Component {
         <Router>
           <Navbar changeCountry={this.changeCountry.bind(this)} />
           <LoadingBar
-          height={3}
+            height={3}
             color='#f11946'
             progress={this.state.progress}
-            // onLoaderFinished={() => setProgress(0)}
+          // onLoaderFinished={() => setProgress(0)}
           />
           <Routes>
             <Route exact path="/" element={<News apiKey={this.apiKey} setProgress={this.setProgress} key="home" pageSize={this.pagesize} country={this.state.country} category='general' />} />
