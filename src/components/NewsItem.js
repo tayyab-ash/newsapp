@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import './NewsItem.css';
 
-
 export class NewsItem extends Component {
   constructor(props) {
     super(props);
@@ -16,19 +15,24 @@ export class NewsItem extends Component {
       imageSrc: 'https://i.ibb.co/zXk0dXC/News-APP-2.png', // Replace with your alternative image URL
     });
   };
+
+
+  
+
+
   render() {
-    let { title, description, newsUrl, author, date, source } = this.props;
+    let { title, description, newsUrl, author, date, source, cardBG, cardBorder, cardTitle } = this.props;
     return (
       <div>
-        <div className="card margin my-2">
+        <div className={`card margin my-2 text-bg-${cardBG} border-${cardBorder}`} > {/*Use border secondary  */}
           <a href={newsUrl} target="_blank" rel="noopener noreferrer"><img src={this.state.imageSrc} onError={this.handleImageError} className="card-img-top" alt="Unable to load thumbnail."   /></a>
-          <p className="card-text mt-1 mb-0"><small className="mx-3">{source === '[Removed]'? 'Source not available': source}</small></p>
           <div className="card-body">
-            <h5 className="card-title"><a className="link-dark text-decoration-none" target="_blank" rel="noopener noreferrer" href={newsUrl}>{title ==='[Removed]'? 'Sorry! This news is not avaiable right now. Please refresh to update news catalog!' : title}</a></h5>
+            <p className="card-text mb-2"><small className="text-danger">{source === '[Removed]'? 'Source not available': source}</small></p>
+            <h5 className="card-title"><a className={`link-${cardTitle} text-decoration-none`} target="_blank" rel="noopener noreferrer" href={newsUrl}>{title ==='[Removed]'? 'Sorry! This news is not avaiable right now. Please refresh to update news catalog!' : title}</a></h5>
             <p className="card-text">
               {description === '[Removed]'? 'Description not available. Click read more for details.' : description}
             </p>
-            <p className="card-text"><small className="text-body-secondary">{!(author && title) ? 'Not Available' : `By ${author} Updated on ${new Date(date).toGMTString()}`}</small></p>
+            <p className="card-text"><small className="text-secondary">{!(author && title) ? 'Not Available' : `By ${author} Updated on ${new Date(date).toGMTString()}`}</small></p>
             {/* <a href={newsUrl} target="_blank" rel="noopener noreferrer" className="btn btn-dark">
               Read More
             </a> */}

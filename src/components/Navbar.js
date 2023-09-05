@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { NavLink, Link } from 'react-router-dom'
 import india from './images/india.png'
 import us from './images/united-states.png'
-import './NewsItem.css';
-
+import './NewsItem.css'
+import './ModeButton.css'
 const countryImages = {
   in: india,
   us: us
@@ -13,7 +13,7 @@ export class Navbar extends Component {
 
   constructor(props) {
     super(props);
-    const storedFlag = localStorage.getItem('selectedFlag'); 
+    const storedFlag = localStorage.getItem('selectedFlag');
     this.state = {
       selectedCountry: storedFlag || 'in' //retrieves the country from the Local storage if no Key is pressent the in the local storage 'in' is used.
     };
@@ -27,10 +27,15 @@ export class Navbar extends Component {
     });
   }
 
+  handleCheckboxChange(){
+    this.props.checkboxChange();
+  }
+
+
   render() {
     const { selectedCountry } = this.state;
     return (
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary  ">
         <div className="container-fluid">
           <div className='d-flex justify-content-center align-items-center'>
             <img src="https://i.ibb.co/QdZ1f11/live.png" className='mx-1' width='40px' alt="" />
@@ -49,6 +54,10 @@ export class Navbar extends Component {
               <li className="nav-item"><NavLink className="nav-link" activeclassname="active" to="/sports">Sports</NavLink></li>
               <li className="nav-item"><NavLink className="nav-link" activeclassname="active" to="/technology">Technology</NavLink></li>
             </ul>
+            <label className="switch">
+              <input type="checkbox" onChange={()=> this.handleCheckboxChange()} />
+              <span className="slider"></span>
+            </label>
             <div className="btn-group">
               <button
                 type="button"
@@ -64,6 +73,7 @@ export class Navbar extends Component {
                 <li><button className="dropdown-item d-flex justify-content-between" onClick={() => this.handleChangeCountry('us')}> <span>US</span>  <span><img src={us} alt="" width='24px' /></span></button></li>
               </ul>
             </div>
+            
           </div>
         </div>
       </nav>

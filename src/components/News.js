@@ -118,15 +118,15 @@ export class News extends Component {
   // }
 
 
-
+  
 
 
   render() {
     console.log("render")
     return (
       <div className='container my-3'>
-        <h1 className='text-center heading'>Top Headlines - {this.capitalizeTitle(this.props.category)}</h1>
-        <hr />
+        <h1 className={`text-center heading text-${this.props.cardTitle}`}>Top Headlines - {this.capitalizeTitle(this.props.category)}</h1>
+        <hr className={`text-${this.props.cardTitle}`} />
         {this.state.loading && <Spinner />}
         {/* {!this.state.loading && <div className='d-flex justify-content-between margin'>
           <button disabled={this.state.page <= 1} className='btn btn-dark ' onClick={this.handlePrevClick}>&#8592; Previous</button>
@@ -141,7 +141,7 @@ export class News extends Component {
         >
           <div className='d-flex justify-content-start flex-wrap'>
             {this.state.articles.map((element) => {
-              return <NewsItem key={element.url==='https://removed.com'? Math.random():element.url} title={element.title} description={element.description} imageUrl={element.urlToImage} newsUrl={element.url} author={!element.author ? 'Unknown' : element.author} date={element.publishedAt} source={element.source.name} />
+              return <NewsItem key={element.url==='https://removed.com'? Math.random():element.url} title={element.title} description={element.description} imageUrl={element.urlToImage} newsUrl={element.url} author={!element.author ? 'Unknown' : element.author} date={element.publishedAt} source={element.source.name} cardTitle={this.props.cardTitle} cardBorder={this.props.cardBorder} cardBG={this.props.cardBG} />
             })}
           </div>
         </InfiniteScroll>
