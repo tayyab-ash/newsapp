@@ -27,8 +27,8 @@ export class Navbar extends Component {
     });
   }
 
-  handleCheckboxChange(){
-    this.props.checkboxChange();
+  handleBoxChange(){
+    this.props.changeMode();
   }
 
 
@@ -55,7 +55,7 @@ export class Navbar extends Component {
               <li className="nav-item"><NavLink className="nav-link" activeclassname="active" to="/technology">Technology</NavLink></li>
             </ul>
             <label className="switch">
-              <input type="checkbox" onChange={()=> this.handleCheckboxChange()} />
+              <input type="checkbox" onChange={()=> this.handleBoxChange()} />
               <span className="slider"></span>
             </label>
             <div className="btn-group">

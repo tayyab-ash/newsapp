@@ -21,7 +21,9 @@ export class NewsItem extends Component {
 
 
   render() {
-    let { title, description, newsUrl, author, date, source, cardBG, cardBorder, cardTitle } = this.props;
+    let { title, description, newsUrl, author, date, source } = this.props;
+    const { cardBG, cardBorder, cardTitle } = this.props.modeType;
+    // console.log(this.props.modeType)
     return (
       <div>
         <div className={`card margin my-2 text-bg-${cardBG} border-${cardBorder}`} > {/*Use border secondary  */}

@@ -13,7 +13,7 @@ import {
 export default class App extends Component {
   state = {
     progress: 0
-  }
+  } 
   setProgress = (progress) => {
     this.setState({
       progress: progress
@@ -21,14 +21,15 @@ export default class App extends Component {
   }
   constructor() {
     super();
-    const storedCountry = localStorage.getItem('selectedCountry'); 
-    this.state = {
+    const storedCountry = localStorage.getItem('selectedCountry');
+    this.state = { 
       country: storedCountry || 'in', //retrieves the country from the Local storage if no Key is pressent the in the local storage 'in' is used.
-      // mode: 'light',
-      cardBG: 'white',
+      modeType: { cardBG: 'white',
       cardBorder: 'null',
-      cardTitle: 'dark',
-    };
+      cardTitle: 'dark', 
+      backgColor: document.body.style.backgroundColor = 'white'
+    }
+    };      
   }
   changeCountry(ctr) {
     localStorage.setItem('selectedCountry', ctr);   //stores the selected country in the local storage when the country is changed.
@@ -38,26 +39,24 @@ export default class App extends Component {
     console.log("COUNTRY CHANGED", ctr)
   }
 
-  checkboxChange = () => {
-    console.log('hehehehehehehehh')
-    if(this.state.cardBG==='white'){
-      this.setState({
-        // mode: 'dark',
-        cardBG: 'dark',
-        cardBorder: 'secondary',
-        cardTitle: 'light',
-      })   
-      document.body.style.backgroundColor = 'rgb(33 37 41)'
+  changeMode = () => {
+    const newmodeType = this.state.modeType.cardBG === 'white'
+    ? {
+      cardBG: 'dark',
+      cardBorder: 'secondary',
+      cardTitle: 'light',
+      backgColor: document.body.style.backgroundColor = 'rgb(33 37 41)'
     }
-    else{
-      this.setState({
-        // mode: 'light',
-        cardBG: 'white',
-        cardBorder: 'null',
-        cardTitle: 'dark',
-      })
-      document.body.style.backgroundColor = 'white'
-    }
+    : {
+      cardBG: 'white',
+      cardBorder: 'null',
+      cardTitle: 'dark',
+      backgColor: document.body.style.backgroundColor = 'white'
+    };
+    this.setState({
+      modeType: newmodeType,
+    });
+
   };    
 
   pagesize = 20;
@@ -66,27 +65,27 @@ export default class App extends Component {
     return (
       <div>  
         <Router>
-          <Navbar checkboxChange={this.checkboxChange} changeCountry={this.changeCountry.bind(this)} />
+          <Navbar changeMode={this.changeMode} changeCountry={this.changeCountry.bind(this)} />
           <LoadingBar
-            height={3}
+            height={3}  
             color='#f11946'
             progress={this.state.progress}
           // onLoaderFinished={() => setProgress(0)}
           />
           <Routes>
-            <Route exact path="/" element={<News cardTitle={this.state.cardTitle} cardBorder={this.state.cardBorder} cardBG={this.state.cardBG} apiKey={this.apiKey} setProgress={this.setProgress} key="home" pageSize={this.pagesize} country={this.state.country} category='general' />} />
-            {/* <Route exact path="/general" element={<News cardTitle={this.state.cardTitle} cardBorder={this.state.cardBorder} cardBG={this.state.cardBG} apiKey={this.apiKey} setProgress={this.setProgress} key="general" pageSize={this.pagesize} country={this.state.country} category='general' />} /> */}
-            <Route exact path="/business" element={<News cardTitle={this.state.cardTitle} cardBorder={this.state.cardBorder} cardBG={this.state.cardBG} apiKey={this.apiKey} setProgress={this.setProgress} key="business" pageSize={this.pagesize} country={this.state.country} category='business' />} />
-            <Route exact path="/entertainment" element={<News cardTitle={this.state.cardTitle} cardBorder={this.state.cardBorder} cardBG={this.state.cardBG} apiKey={this.apiKey} setProgress={this.setProgress} key="entertainment" pageSize={this.pagesize} country={this.state.country} category='entertainment' />} />
-            <Route exact path="/health" element={<News cardTitle={this.state.cardTitle} cardBorder={this.state.cardBorder} cardBG={this.state.cardBG} apiKey={this.apiKey} setProgress={this.setProgress} key="health" pageSize={this.pagesize} country={this.state.country} category='health' />} />
-            <Route exact path="/science" element={<News cardTitle={this.state.cardTitle} cardBorder={this.state.cardBorder} cardBG={this.state.cardBG} apiKey={this.apiKey} setProgress={this.setProgress} key="science" pageSize={this.pagesize} country={this.state.country} category='science' />} />
-            <Route exact path="/sports" element={<News cardTitle={this.state.cardTitle} cardBorder={this.state.cardBorder} cardBG={this.state.cardBG} apiKey={this.apiKey} setProgress={this.setProgress} key="sports" pageSize={this.pagesize} country={this.state.country} category='sports' />} />
-            <Route exact path="/technology" element={<News cardTitle={this.state.cardTitle} cardBorder={this.state.cardBorder} cardBG={this.state.cardBG} apiKey={this.apiKey} setProgress={this.setProgress} key="technology" pageSize={this.pagesize} country={this.state.country} category='technology' />} />
+            <Route exact path="/" element={<News modeType={this.state.modeType} apiKey={this.apiKey} setProgress={this.setProgress} key="home" pageSize={this.pagesize} country={this.state.country} category='general' />} />
+            {/* <Route exact path="/general" element={<News modeType={this.state.modeType} apiKey={this.apiKey} setProgress={this.setProgress} key="general" pageSize={this.pagesize} country={this.state.country} category='general' />} /> */}
+            <Route exact path="/business" element={<News modeType={this.state.modeType} apiKey={this.apiKey} setProgress={this.setProgress} key="business" pageSize={this.pagesize} country={this.state.country} category='business' />} />
+            <Route exact path="/entertainment" element={<News modeType={this.state.modeType} apiKey={this.apiKey} setProgress={this.setProgress} key="entertainment" pageSize={this.pagesize} country={this.state.country} category='entertainment' />} />
+            <Route exact path="/health" element={<News modeType={this.state.modeType} apiKey={this.apiKey} setProgress={this.setProgress} key="health" pageSize={this.pagesize} country={this.state.country} category='health' />} />
+            <Route exact path="/science" element={<News modeType={this.state.modeType} apiKey={this.apiKey} setProgress={this.setProgress} key="science" pageSize={this.pagesize} country={this.state.country} category='science' />} />
+            <Route exact path="/sports" element={<News modeType={this.state.modeType} apiKey={this.apiKey} setProgress={this.setProgress} key="sports" pageSize={this.pagesize} country={this.state.country} category='sports' />} />
+            <Route exact path="/technology" element={<News modeType={this.state.modeType} apiKey={this.apiKey} setProgress={this.setProgress} key="technology" pageSize={this.pagesize} country={this.state.country} category='technology' />} />
           </Routes>
 
 
 
-          {/* <News cardTitle={this.state.cardTitle} cardBorder={this.state.cardBorder} cardBG={this.state.cardBG} apiKey={this.apiKey} setProgress={this.setProgress} pageSize={this.pagesize} country='in' category='sports'/> */}
+          {/* <News modeType={this.state.modeType} apiKey={this.apiKey} setProgress={this.setProgress} pageSize={this.pagesize} country='in' category='sports'/> */}
           {/* <Footer/> */}
         </Router>
       </div>
